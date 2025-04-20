@@ -1,9 +1,52 @@
+import { useState } from "react";
 import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 import wdm from "../assets/images/wdmblack.png";
+import ConsentWebView from "@/components/ConsentWebView";
 
 export default function Index() {
   const router = useRouter();
+  const [showWebView, setShowWebView] = useState(false);
+  const [consentUrl, setConsentUrl] = useState(null);
+
+  const handleGetStarted = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/api/aa/consent", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          customerId: "9999999999", // Replace with actual user ID
+        }),
+      });
+
+      const data = await response.json();
+      if (data.url) {
+        setConsentUrl(data.url);
+        setShowWebView(true);
+      }
+    } catch (error) {
+      console.error("Error initiating consent:", error);
+    }
+  };
+
+  const handleConsentComplete = (success) => {
+    setShowWebView(false);
+    if (success) {
+      router.push("/expense");
+    }
+  };
+
+  if (showWebView && consentUrl) {
+    return (
+      <ConsentWebView
+        consentUrl={consentUrl}
+        onComplete={handleConsentComplete}
+      />
+    );
+  }
+
   return (
     <View style={styles.container}>
       <Image source={wdm} style={styles.image} />

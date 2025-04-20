@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useFonts } from "expo-font";
+import { normalize } from "@/utils/responsive";
 
 const SpendingSummary = ({
   timeFrame,
@@ -35,7 +36,7 @@ const SpendingSummary = ({
               : ""}
           </Text>
           <TouchableOpacity>
-            <Text style={{ fontSize: 24 }}>
+            <Text style={styles.emojiText}>
               {isActive &&
                 (Number(comparisonAmount) > Number(amount) ? "🤑" : "😭")}
             </Text>
@@ -56,23 +57,29 @@ const SpendingSummary = ({
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 6,
+    paddingVertical: normalize(6),
   },
   activeContainer: {
     backgroundColor: "rgba(243, 244, 246, 0.5)",
-    borderRadius: 8,
+    borderRadius: normalize(8),
   },
   content: {
     alignItems: "center",
+    paddingHorizontal: normalize(10),
   },
   emoji: {
     flexDirection: "row",
+    alignItems: "center",
+    gap: normalize(4),
   },
   amount: {
-    fontSize: 40,
+    fontSize: normalize(32), // Reduced from 40
     fontFamily: "Alfa",
     fontWeight: "bolder",
-    marginTop: 4,
+    marginTop: normalize(4),
+  },
+  emojiText: {
+    fontSize: normalize(20), // Reduced from 24
   },
   activeAmount: {
     color: "#222222",
@@ -88,9 +95,9 @@ const styles = StyleSheet.create({
     color: "#9ca3af",
   },
   comparison: {
-    fontSize: 16,
+    fontSize: normalize(14), // Reduced from 16
     color: "#9ca3af",
-    marginTop: 4,
+    marginTop: normalize(4),
   },
 });
 

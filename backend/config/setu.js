@@ -6,19 +6,30 @@ let cachedToken = null;
 const getSetuToken = async () => {
   if (cachedToken) return cachedToken;
 
-  const response = await axios.post(
-    "https://api.setu.co/api/v2/token",
-    {},
-    {
-      headers: {
-        "x-client-id": process.env.SETU_CLIENT_ID,
-        "x-client-secret": process.env.SETU_CLIENT_SECRET,
-      },
-    }
-  );
+  const options = {
+    method: "post",
+    url: "https://orgservice-prod.setu.co/v1/users/login",
+    headers: {
+      client: "bridge",
+    },
+    data: {
+      clientID: process.env.SETU_CLIENT_ID,
+      secret: process.env.SETU_CLIENT_SECRET,
+      grant_type: "client_credentials",
+    },
+  };
 
-  cachedToken = response.data.access_token;
-  return cachedToken;
+  try {
+    const response = await axios.request(options);
+    cachedToken = response.data.token;
+    return cachedToken;
+  } catch (error) {
+    console.error(
+      "Error getting Setu token:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
 };
 
 module.exports = { getSetuToken };

@@ -4,6 +4,7 @@ import { Image } from "react-native";
 import { usePathname } from "expo-router";
 import logo from "@/assets/images/wdmlogo.png";
 import HeaderRight from "@/components/headerRight";
+import { normalize } from "@/utils/responsive";
 
 export default function RootLayout() {
   const [onExpense, setOnExpense] = useState(false);
@@ -23,8 +24,8 @@ export default function RootLayout() {
           <Image
             source={logo}
             style={{
-              width: 60,
-              height: 35,
+              width: normalize(60),
+              height: normalize(35),
               resizeMode: "cover",
             }}
           />
@@ -34,12 +35,12 @@ export default function RootLayout() {
         }),
         headerTintColor: "#fff",
         headerTitleStyle: {
-          fontSize: 20,
+          fontSize: normalize(20),
           fontWeight: "bold",
         },
         contentStyle: {
-          paddingHorizontal: 10,
-          paddingTop: 10,
+          paddingHorizontal: normalize(10),
+          paddingTop: normalize(10),
           backgroundColor: "#fff",
         },
       }}

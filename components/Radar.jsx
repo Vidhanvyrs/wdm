@@ -1,7 +1,11 @@
 import React from "react";
-import { Text, View, StyleSheet, SafeAreaView } from "react-native";
+import { View, StyleSheet, SafeAreaView, Dimensions } from "react-native";
 import { RadarChart } from "@salmonco/react-native-radar-chart";
 import { useFonts } from "expo-font";
+import { normalize } from "@/utils/responsive";
+
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
+const CHART_SIZE = SCREEN_WIDTH * 0.8;
 
 const Radar = () => {
   const [fontsLoaded] = useFonts({
@@ -21,25 +25,32 @@ const Radar = () => {
 
   return (
     <View style={styles.container}>
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.chartContainer}>
         <RadarChart
           data={data}
           maxValue={100}
+          size={CHART_SIZE}
           gradientColor={{
             startColor: "#f0f0f0",
             endColor: "black",
             count: 5,
           }}
           stroke={["#FFE8D3", "#FFE8D3", "#FFE8D3", "#FFE8D3", "#ff9532"]}
-          strokeWidth={[0.5, 0.5, 0.5, 0.5, 1]}
+          strokeWidth={[
+            normalize(0.5),
+            normalize(0.5),
+            normalize(0.5),
+            normalize(0.5),
+            normalize(1),
+          ]}
           strokeOpacity={[1, 1, 1, 1, 0.13]}
           labelColor="#f0f0f0"
           labelFontFamily="Alfa"
-          labelSize={14}
+          labelSize={normalize(12)} // Reduced from 14 for better fit
           dataFillColor="#222222"
           dataFillOpacity={0.8}
           dataStroke="white"
-          dataStrokeWidth={2}
+          dataStrokeWidth={normalize(2)}
           isCircle={false}
         />
       </SafeAreaView>
@@ -50,9 +61,16 @@ const Radar = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: -10,
     justifyContent: "center",
     alignItems: "center",
+    paddingVertical: normalize(15),
+  },
+  chartContainer: {
+    width: CHART_SIZE,
+    height: CHART_SIZE,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: normalize(-10),
   },
 });
 

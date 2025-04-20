@@ -1,5 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 import { useFonts } from "expo-font";
+import { normalize } from "@/utils/responsive";
+
 const Recipent = ({ recipent, money }) => {
   const [fontsLoaded] = useFonts({
     Alfa: require("@/assets/fonts/AlfaSlabOne-Regular.ttf"),
@@ -21,14 +23,14 @@ const styles = StyleSheet.create({
     borderColor: "white",
     justifyContent: "space-between",
     borderWidth: 1,
-    borderRadius: 10,
-    padding: 5,
-    marginTop: 16,
-    marginHorizontal: 14,
+    borderRadius: normalize(10),
+    padding: normalize(5),
+    marginTop: normalize(16),
+    marginHorizontal: normalize(14),
   },
   recipent: {
     color: "black",
-    fontSize: 15,
+    fontSize: normalize(14),
     fontFamily: "Alfa",
     fontWeight: "bolder",
   },
