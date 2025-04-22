@@ -3,6 +3,7 @@ import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 import wdm from "../assets/images/wdmblack.png";
 import ConsentWebView from "@/components/ConsentWebView";
+// import { BACKEND_URL } from "@env";
 
 export default function Index() {
   const router = useRouter();
@@ -11,23 +12,44 @@ export default function Index() {
 
   const handleGetStarted = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/aa/consent", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          customerId: "9999999999", // Replace with actual user ID
-        }),
-      });
+      const response = await fetch(
+        `https://98ef-139-167-72-46.ngrok-free.app/api/aa/consent`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            customerId: "7725905353",
+          }),
+        }
+      );
 
-      const data = await response.json();
+      // Log the raw response for debugging
+      const responseText = await response.text();
+      console.log("Raw response:", responseText);
+
+      // Check if response is OK
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Try parsing the response
+      const data = JSON.parse(responseText);
       if (data.url) {
         setConsentUrl(data.url);
         setShowWebView(true);
+      } else {
+        console.error("No URL in response:", data);
       }
     } catch (error) {
-      console.error("Error initiating consent:", error);
+      console.error("Error initiating consent:", {
+        message: error.message,
+        type: error.name,
+        stack: error.stack,
+      });
+      alert("Failed to connect to the server. Please try again.");
     }
   };
 
@@ -54,10 +76,7 @@ export default function Index() {
       <Text style={styles.subtitle}>
         Minimal Expense App to track weekly, daily & monthly expenses
       </Text>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => router.push("/expense")}
-      >
+      <TouchableOpacity style={styles.button} onPress={handleGetStarted}>
         <Text style={styles.buttonText}>Get Started</Text>
       </TouchableOpacity>
     </View>

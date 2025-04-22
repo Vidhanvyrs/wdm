@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Stack } from "expo-router";
-import { Image } from "react-native";
+import { Stack, useRouter } from "expo-router";
+import { Image, TouchableOpacity } from "react-native";
 import { usePathname } from "expo-router";
 import logo from "@/assets/images/wdmlogo.png";
 import HeaderRight from "@/components/headerRight";
@@ -9,6 +9,7 @@ import { normalize } from "@/utils/responsive";
 export default function RootLayout() {
   const [onExpense, setOnExpense] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     setOnExpense(pathname.includes("expense"));
@@ -21,14 +22,16 @@ export default function RootLayout() {
           backgroundColor: "#222222",
         },
         headerTitle: () => (
-          <Image
-            source={logo}
-            style={{
-              width: normalize(60),
-              height: normalize(35),
-              resizeMode: "cover",
-            }}
-          />
+          <TouchableOpacity onPress={() => router.push("/")}>
+            <Image
+              source={logo}
+              style={{
+                width: normalize(60),
+                height: normalize(35),
+                resizeMode: "cover",
+              }}
+            />
+          </TouchableOpacity>
         ),
         ...(onExpense && {
           headerRight: () => <HeaderRight />,
